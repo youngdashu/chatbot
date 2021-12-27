@@ -21,7 +21,6 @@ def testNumbers(requests, *args, **kwargs):
 @csrf_exempt
 @require_POST
 def dialogflowRequest(request):
-    print(request)
-    requestJson = request.get_json()
-    print(requestJson)
+    print("!!"+request)
+    print("!!!" + request.POST)
     return JsonResponse("")
