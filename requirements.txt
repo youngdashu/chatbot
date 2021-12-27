@@ -1,4 +1,5 @@
 Django~=4.0
 dj-config-url~=0.1.1
 gunicorn~=20.1.0
-django_heroku
+dj-database-url
+psycopg2
