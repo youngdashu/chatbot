@@ -22,3 +22,6 @@ def testNumbers(requests, *args, **kwargs):
 @require_POST
 def dialogflowRequest(request):
     print(request)
+    requestJson = request.get_json()
+    print(requestJson)
+    return JsonResponse("")
