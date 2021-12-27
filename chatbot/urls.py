@@ -21,6 +21,7 @@ from chatbotApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', views.test),
-    path('test/<int:number>', views.testNumbers)
+    path('test/<int:number>', views.testNumbers),
+    path('dialogflowRequest/', views.dialogflowRequest)
 
 ]
