@@ -14,6 +14,10 @@ from pathlib import Path
 import dj_database_url
 import gunicorn
 
+from dotenv import load_dotenv
+project_folder = os.path.expanduser(os.getcwd())  # adjust as appropriate
+load_dotenv(os.path.join(project_folder, '.env'))
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,13 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
+# print(os.environ)
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'tire-company-chatbot-app.herokuapp.com']
-
+# ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'tire-company-chatbot-app.herokuapp.com']
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -82,12 +87,12 @@ WSGI_APPLICATION = 'chatbot.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3'
-    },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3'
+    # },
 
-    'production':{
+    'default':{
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'productiondb'
     }
@@ -146,4 +151,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 if 'DATABASE_URL' in os.environ:
 
-    DATABASES = {'production': dj_database_url.config()}
+    DATABASES = {'default': dj_database_url.config()}
