@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', views.test),
     path('test/<int:number>', views.testNumbers),
-    path('dialogflow-request/', views.dialogflowRequest)
+    path('dialogflow-request/', views.dialogflowRequest),
+    path('add-tire-manufacturers/', )
 
 ]
