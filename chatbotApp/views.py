@@ -95,7 +95,6 @@ def dialogflowRequest(request):
         res = ""
         for tire in tires:
             res += (str(tire) + "\n")
-        print(res)
         return res
 
     body = request.body.decode().replace("\n", "")
