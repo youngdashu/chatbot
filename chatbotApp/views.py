@@ -85,13 +85,17 @@ def dialogflowRequest(request):
                 size = parameters.get('number')
             if carType is None and parameters.get('car-type') is not None:
                 carType = parameters.get('car-type')
-        seasonObj = Seasons.objects.filter(name__startswith=season)
+        seasonObj = Seasons.objects.get(name__startswith=season)
 
-        tires = Tire.objects.filter(season=seasonObj, size__in=[size], type=carType)
+        # tires = Tire.objects.filter(season=seasonObj, size__in=[size], type=carType)
+        # tires = Tire.objects.filter(season=seasonObj).filter( size__in=[size]).filter( type=carType)
+
+        tires = Tire.objects.filter(type=carType, size__in=[size], season=seasonObj)
 
         res = ""
         for tire in tires:
             res += (str(tire) + "\n")
+        print(res)
         return res
 
     body = request.body.decode().replace("\n", "")

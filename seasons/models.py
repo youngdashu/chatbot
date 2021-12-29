@@ -7,7 +7,7 @@ from django.db import models
 class Seasons(models.Model):
     name = models.CharField(max_length=20)
 
-    def __repr__(self):
+    def __str__(self):
 
         if self.name == "summer":
             return "lato"

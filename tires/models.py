@@ -14,7 +14,10 @@ class Tire(models.Model):
     season = models.ForeignKey(Seasons, on_delete=models.CASCADE, null=True)
     type = models.CharField(max_length=20, null=True)
 
-    def __repr__(self):
-        return "Model: " + str(self.name) + " rozmiar: " + str(self.size) +" cali producent: " + \
-               str(self.manufacturer.name) + " sezon: " + str(self.season) + " typ: " + str(self.type) +\
-               " cena za oponę: " + str(self.price)
+    def __str__(self):
+
+        tireType = "osobowy" if str(self.type) == "car"  else "ciężarowy"
+
+        return "Model: " + str(self.name) + " Rozmiar: " + str(self.size) +" cali Producent: " + \
+               str(self.manufacturer.name) + " Sezon: " + str(self.season) + " Typ: " + tireType +\
+               " Cena za oponę: " + str(self.price)
