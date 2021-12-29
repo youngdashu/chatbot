@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_GET
 
+from seasons.models import Seasons
 from tireManufacturers.models import TireManufacturers
 from tires.models import Tire
 
@@ -23,6 +24,16 @@ def testNumbers(requests, *args, **kwargs):
     return HttpResponse("record saved")
 
 
+def addSeasons(requests, *args, **kwargs):
+    summer = Seasons(name="summer")
+    summer.save()
+    winter = Seasons(name="winter")
+    winter.save()
+    all_seasons = Seasons(name="all_seasons")
+    all_seasons.save()
+    return HttpResponse("successful")
+
+
 @require_GET
 def addTireManufacturers(requests, *args, **kwargs):
     manufacturerNames = ["Dębica", "Goodyear", "Dunlop", "Fulda"]
@@ -38,11 +49,19 @@ def addTireManufacturers(requests, *args, **kwargs):
 
 @require_GET
 def addTire(requests, *args, **kwargs):
+    seasons = Seasons.objects.all()
     sizes = [13, 14, 15]
     prices = [183.5, 209.0, 228.5]
     m = TireManufacturers.objects.get(name__startswith="Dęb")
-    for size, price in zip(sizes, prices):
-        tire = Tire(name="Frigo", size=size, price=price, manufacturer=m)
+    for size, price, season in zip(sizes, prices, seasons):
+        tire = Tire(name="Frigo", size=size, price=price, manufacturer=m, season=season, type="car")
+        tire.save()
+
+    sizes = [22]
+    prices = [3423.9]
+    m = TireManufacturers.objects.get(name__startswith="Good")
+    for size, price, season in zip(sizes, prices, seasons):
+        tire = Tire(name="Kmax s gen 2", size=size, price=price, manufacturer=m, season=season, type="truck")
         tire.save()
 
     return HttpResponse("successful")
@@ -51,10 +70,28 @@ def addTire(requests, *args, **kwargs):
 @csrf_exempt
 @require_POST
 def dialogflowRequest(request):
-    # print(request)
-    # print(request.POST)
-    # print(request.body)
-    # print(str(request.body))
+    def getListOfAvailableTires(req):
+
+        outputContexts = req['queryResult']['outputContexts']
+        season = None
+        size = None
+        carType = None
+        for outputContext in outputContexts:
+            parameters = outputContext['parameters']
+            if season is None and parameters.get('tire-season') is not None:
+                season = parameters.get('tire-season')
+            if size is None and parameters.get('number') is not None:
+                size = parameters.get('number')
+            if carType is None and parameters.get('car-type') is not None:
+                carType = parameters.get('car-type')
+        seasonObj = Seasons.objects.filter(name__startswith=season)
+
+        tires = Tire.objects.filter(season__tire=seasonObj, size__in=[size], type=carType)
+
+        res = ""
+        for tire in tires:
+            res += (str(tire) + "\n")
+        return res
 
     body = request.body.decode().replace("\n", "")
     # print(body)
@@ -62,17 +99,23 @@ def dialogflowRequest(request):
 
     responseText = "Default django response"
 
-    if req['queryResult']['parameters']['number'] is not None:
-        # check tire size
-        tireSize = Tire.objects.filter(size__in=[req['queryResult']['parameters']['number']])
+    parameters = req['queryResult'].get('parameters')
+    if parameters:
 
-        if len(tireSize) == 0:
-            responseText = "Brak opon o podanym rozmiarze"
+        if parameters.get('tire-season') is not None:
+            responseText = getListOfAvailableTires(req)
+
+        elif parameters.get('number') is not None:
+            # check tire size
+            tireSize = Tire.objects.filter(size__in=[req['queryResult']['parameters']['number']])
+
+            if len(tireSize) == 0:
+                responseText = "Brak opon o podanym rozmiarze"
+            else:
+                responseText = "W porządku, na jaką porę roku potrzebujesz opon? Letnie, zimowe, całoroczne"
+
         else:
-            responseText = "W porządku, na jaką porę roku potrzebujesz opon? Letnie, zimowe, całoroczne"
-
-    else:
-        pass
+            pass
 
     res = {"fulfillmentMessages": [{"text": {"text": [responseText]}}]}
 

@@ -24,6 +24,7 @@ urlpatterns = [
     path('test/<int:number>', views.testNumbers),
     path('dialogflow-request/', views.dialogflowRequest),
     path('add-tire-manufacturers/', views.addTireManufacturers),
-    path('add-tire/', views.addTire)
+    path('add-tire/', views.addTire),
+    path('add-seasons/', views.addSeasons)
 
 ]
