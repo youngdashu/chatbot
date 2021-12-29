@@ -69,7 +69,7 @@ def dialogflowRequest(request):
         if len(tireSize) == 0:
             responseText = "Brak opon o podanym rozmiarze"
         else:
-            responseText = "W porządku, na jaką porę roku potrzebujesz opon?"
+            responseText = "W porządku, na jaką porę roku potrzebujesz opon? Letnie, zimowe, całoroczne"
 
     else:
         pass
