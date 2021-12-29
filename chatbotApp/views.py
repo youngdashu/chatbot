@@ -26,11 +26,24 @@ def testNumbers(requests, *args, **kwargs):
 def addTireManufacturers(requests, *args, **kwargs):
     manufacturerNames = ["Dębica", "Goodyear", "Dunlop", "Fulda"]
     for manufacturerName in manufacturerNames:
-        manufacturer = TireManufacturers(manufacturerName)
+        manufacturer = TireManufacturers(name=manufacturerName)
         manufacturer.save()
 
     q = TireManufacturers.objects.all()
     print(q)
+
+    return HttpResponse("successfully added")
+
+
+def addTire(requests, *args, **kwargs):
+    sizes = [13, 14, 15]
+    prices = [183.5, 209.0, 228.5]
+    m = TireManufacturers.objects.get(name__startswith="Dęb")
+    for size, price in zip(sizes, prices):
+        tire = Tire(name="Frigo", size=size, price=price, manufacturer=m)
+        tire.save()
+
+    return HttpResponse("successful")
 
 
 @csrf_exempt
