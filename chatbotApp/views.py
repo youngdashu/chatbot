@@ -22,6 +22,7 @@ def testNumbers(requests, *args, **kwargs):
     sampleAddress.save()
     return HttpResponse("record saved")
 
+
 @require_GET
 def addTireManufacturers(requests, *args, **kwargs):
     manufacturerNames = ["Dębica", "Goodyear", "Dunlop", "Fulda"]
@@ -33,6 +34,7 @@ def addTireManufacturers(requests, *args, **kwargs):
     print(q)
 
     return HttpResponse("successfully added")
+
 
 @require_GET
 def addTire(requests, *args, **kwargs):
