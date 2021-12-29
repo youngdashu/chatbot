@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 
 from tireManufacturers.models import TireManufacturers
 from tires.models import Tire
@@ -22,7 +22,7 @@ def testNumbers(requests, *args, **kwargs):
     sampleAddress.save()
     return HttpResponse("record saved")
 
-
+@require_GET
 def addTireManufacturers(requests, *args, **kwargs):
     manufacturerNames = ["Dębica", "Goodyear", "Dunlop", "Fulda"]
     for manufacturerName in manufacturerNames:
@@ -34,7 +34,7 @@ def addTireManufacturers(requests, *args, **kwargs):
 
     return HttpResponse("successfully added")
 
-
+@require_GET
 def addTire(requests, *args, **kwargs):
     sizes = [13, 14, 15]
     prices = [183.5, 209.0, 228.5]
