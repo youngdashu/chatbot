@@ -98,7 +98,7 @@ def dialogflowRequest(request):
         return res
 
     body = request.body.decode().replace("\n", "")
-    # print(body)
+
     req = json.loads(body)
 
     responseText = "Default django response"
