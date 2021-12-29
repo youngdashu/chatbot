@@ -50,11 +50,12 @@ def addTireManufacturers(requests, *args, **kwargs):
 @require_GET
 def addTire(requests, *args, **kwargs):
     seasons = Seasons.objects.all()
+    names = ["Passjo", "Frigo", "Navigator"]
     sizes = [13, 14, 15]
     prices = [183.5, 209.0, 228.5]
     m = TireManufacturers.objects.get(name__startswith="Dęb")
-    for size, price, season in zip(sizes, prices, seasons):
-        tire = Tire(name="Frigo", size=size, price=price, manufacturer=m, season=season, type="car")
+    for name, size, price, season in zip(names, sizes, prices, seasons):
+        tire = Tire(name=name, size=size, price=price, manufacturer=m, season=season, type="car")
         tire.save()
 
     sizes = [22]
