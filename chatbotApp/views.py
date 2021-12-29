@@ -87,7 +87,7 @@ def dialogflowRequest(request):
                 carType = parameters.get('car-type')
         seasonObj = Seasons.objects.filter(name__startswith=season)
 
-        tires = Tire.objects.filter(season__tire=seasonObj, size__in=[size], type=carType)
+        tires = Tire.objects.filter(season=seasonObj, size__in=[size], type=carType)
 
         res = ""
         for tire in tires:
