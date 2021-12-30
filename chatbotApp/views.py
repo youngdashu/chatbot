@@ -24,6 +24,7 @@ def testNumbers(requests, *args, **kwargs):
     return HttpResponse("record saved")
 
 
+@require_POST
 def addSeasons(requests, *args, **kwargs):
     summer = Seasons(name="summer")
     summer.save()
@@ -34,7 +35,7 @@ def addSeasons(requests, *args, **kwargs):
     return HttpResponse("successful")
 
 
-@require_GET
+@require_POST
 def addTireManufacturers(requests, *args, **kwargs):
     manufacturerNames = ["Dębica", "Goodyear", "Dunlop", "Fulda"]
     for manufacturerName in manufacturerNames:
@@ -47,7 +48,7 @@ def addTireManufacturers(requests, *args, **kwargs):
     return HttpResponse("successfully added")
 
 
-@require_GET
+@require_POST
 def addTire(requests, *args, **kwargs):
     seasons = Seasons.objects.all()
     names = ["Passjo", "Frigo", "Navigator"]
