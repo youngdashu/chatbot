@@ -1,7 +1,2 @@
 .env
 secret.txt
-#tires/migrations
-#tireManufacturers/migrations
-#seasons/migrations
-#chatbotApp/migrations
-#carWorkshops/migrations
