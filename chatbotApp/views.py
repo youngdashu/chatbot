@@ -23,7 +23,7 @@ def testNumbers(requests, *args, **kwargs):
     sampleAddress.save()
     return HttpResponse("record saved")
 
-
+@csrf_exempt
 @require_POST
 def addSeasons(requests, *args, **kwargs):
     summer = Seasons(name="summer")
@@ -35,6 +35,7 @@ def addSeasons(requests, *args, **kwargs):
     return HttpResponse("successful")
 
 
+@csrf_exempt
 @require_POST
 def addTireManufacturers(requests, *args, **kwargs):
     manufacturerNames = ["Dębica", "Goodyear", "Dunlop", "Fulda"]
@@ -48,6 +49,7 @@ def addTireManufacturers(requests, *args, **kwargs):
     return HttpResponse("successfully added")
 
 
+@csrf_exempt
 @require_POST
 def addTire(requests, *args, **kwargs):
     seasons = Seasons.objects.all()
