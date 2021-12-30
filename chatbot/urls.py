@@ -20,7 +20,7 @@ from chatbotApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test3/', views.test),
+    path('test4/', views.test),
     path('test/<int:number>', views.testNumbers),
     path('dialogflow-request/', views.dialogflowRequest),
     path('add-tire-manufacturers/', views.addTireManufacturers),
