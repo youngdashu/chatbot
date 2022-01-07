@@ -26,5 +26,6 @@ urlpatterns = [
     path('add-tire-manufacturers/', views.addTireManufacturers),
     path('add-tire/', views.addTire),
     path('add-seasons/', views.addSeasons),
+    path('init-workshops/', views.init_workshops)
 
 ]

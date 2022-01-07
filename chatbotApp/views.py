@@ -52,16 +52,21 @@ def addTireManufacturers(requests, *args, **kwargs):
 @csrf_exempt
 def init_workshops(requests):
 
+    Addresses.objects.all().delete()
+    CarWorkshops.objects.all().delete()
+
     address = Addresses(street="Marii Konopnickiej", streetNumber="82", postalCode="30-505", city="Kraków", district="małopolskie")
     address.save()
-    workshop = CarWorkshops(name="Cargum", addres=address, phoneNumber="325682189", emailAddress="cargum@mail.pl")
+    workshop = CarWorkshops(name="Cargum", address=address, phoneNumber="325682189", emailAddress="cargum@mail.pl")
     workshop.save()
 
     address = Addresses(street="Nagawczyna", streetNumber="31", postalCode="39-200", city="Nagawczyna",
-                        district="podkapackie")
+                        district="podkarpackie")
     address.save()
-    workshop = CarWorkshops(name="Buszek Marek. Serwis oponiarski. Autoryzowany przedstawiciel Dębicy", addres=address, phoneNumber="14 677 22 44", emailAddress="serwis@mail.pl")
+    workshop = CarWorkshops(name="Buszek Marek. Serwis oponiarski. Autoryzowany przedstawiciel Dębicy", address=address, phoneNumber="14 677 22 44", emailAddress="serwis@mail.pl")
     workshop.save()
+
+    return HttpResponse("sukces")
 
 
 
@@ -120,12 +125,30 @@ def dialogflowRequest(request):
 
     req = json.loads(body)
 
-    responseText = "Default django response"
+    responseText = "Przepraszam, nie mogę teraz odpowiedzieć na to pytanie. Spróbuj ponownie później."
 
     parameters = req['queryResult'].get('parameters')
     if parameters:
 
-        if parameters.get('tire-season') is not None:
+        if parameters.get('location') is not None:
+
+            district: str = req['queryResult']['outputContexts'][0]['parameters']['location.original']
+            district = district.lower()
+
+            print(district)
+
+            workshops = CarWorkshops.objects.all().filter(address__district__contains=district)
+
+            print(workshops)
+
+            responseText = "Warsztaty oponiarskie w Twoim województwie:\n"
+
+            for workshop in workshops:
+                responseText += (str(workshop) + "\n")
+
+
+
+        elif parameters.get('tire-season') is not None:
             responseText = getListOfAvailableTires(req)
 
         elif parameters.get('number') is not None:
