@@ -135,16 +135,18 @@ def dialogflowRequest(request):
             district: str = req['queryResult']['outputContexts'][0]['parameters']['location.original']
             district = district.lower()
 
-            print(district)
+
 
             workshops = CarWorkshops.objects.all().filter(address__district__contains=district)
 
-            print(workshops)
+            if len(workshops) != 0:
+                responseText = "Warsztaty oponiarskie w Twoim województwie:\n"
 
-            responseText = "Warsztaty oponiarskie w Twoim województwie:\n"
+                for workshop in workshops:
+                    responseText += (str(workshop) + "\n")
 
-            for workshop in workshops:
-                responseText += (str(workshop) + "\n")
+            else:
+                responseText = "Proszę podaj poprawną nazwę województwa i upewnij, że w Twoim województwie są wspierane warsztaty."
 
 
 
