@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_GET
 
+from carWorkshops.models import CarWorkshops
 from seasons.models import Seasons
 from tireManufacturers.models import TireManufacturers
 from tires.models import Tire
@@ -47,6 +48,21 @@ def addTireManufacturers(requests, *args, **kwargs):
     print(q)
 
     return HttpResponse("successfully added")
+
+@csrf_exempt
+def init_workshops(requests):
+
+    address = Addresses(street="Marii Konopnickiej", streetNumber="82", postalCode="30-505", city="Kraków", district="małopolskie")
+    address.save()
+    workshop = CarWorkshops(name="Cargum", addres=address, phoneNumber="325682189", emailAddress="cargum@mail.pl")
+    workshop.save()
+
+    address = Addresses(street="Nagawczyna", streetNumber="31", postalCode="39-200", city="Nagawczyna",
+                        district="podkapackie")
+    address.save()
+    workshop = CarWorkshops(name="Buszek Marek. Serwis oponiarski. Autoryzowany przedstawiciel Dębicy", addres=address, phoneNumber="14 677 22 44", emailAddress="serwis@mail.pl")
+    workshop.save()
+
 
 
 @csrf_exempt
